@@ -1,0 +1,13 @@
+acl_homepage:
+    path:     /acl/{name}
+    defaults: { _controller: ACLBundle:ACL:index }
+
+login:
+    pattern:   /login
+    defaults:  { _controller: ACLBundle:ACL:login }
+
+login_check:
+    pattern:   /login_check
+
+logout:
+    path:   /logout

@@ -1,3 +1,11 @@
+acl_new_user:
+    path:     /acl/new_user
+    defaults: { _controller: ACLBundle:ACL:new }
+
+acl_user_perfil:
+    path:     /acl/perfil
+    defaults: { _controller: ACLBundle:ACL:perfil }
+
 acl_homepage:
     path:     /acl/{name}
     defaults: { _controller: ACLBundle:ACL:index }

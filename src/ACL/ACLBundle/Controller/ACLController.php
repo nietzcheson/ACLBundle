@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
-use ACL\ACLBundle\Entity\User;
-
+use ACL\ACLBundle;
 
 class ACLController extends Controller
 {
@@ -39,8 +38,6 @@ class ACLController extends Controller
   public function perfilAction()
   {
     $user = $this->get('security.context')->getToken()->getUser();
-
-    $roles = new Roles\Roles();
 
     return $this->render('ACLBundle:ACL:perfil.html.twig');
   }

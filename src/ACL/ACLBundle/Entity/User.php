@@ -4,6 +4,8 @@ namespace ACL\ACLBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use ACL\ACLBundle;
 
 /**
  * User
@@ -80,7 +82,8 @@ class User implements UserInterface, \Serializable
   */
   public function getRoles()
   {
-    return array('ROLE_USER');
+    $roles = new ACLBundle\UserRoles();
+    return $roles->roles();
   }
 
   /**

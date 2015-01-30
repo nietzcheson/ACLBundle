@@ -53,6 +53,7 @@
 
 # app/config/security.yml
 security:
+
     firewalls:
         login:
             pattern:    ^/login$
@@ -77,8 +78,8 @@ security:
     providers:
       chain_provider:
         chain:
-          providers: ["in_memory", "user_db", "user_provider"]
-          #providers: ["in_memory", "user_provider"]
+          #providers: ["in_memory", "user_provider", "user_db"]
+          providers: ["in_memory", "user_provider"]
 
       in_memory:
           memory:
@@ -87,11 +88,11 @@ security:
                   # foo
                   test: { password: f7fbba6e0636f890e56fbbf3283e524c6fa3204ae298382d624741d0dc6638326e282c41be5e4254d8820772c5518a2c5a8c0c7f7eda19594a7eb539453e1ed7, roles: 'ROLE_ADMIN' }
 
-      user_db:
-        entity: { class: ACL\ACLBundle\Entity\User, property: username }
-
       user_provider:
             id: user_provider
+
+      # user_db:
+      #   entity: { class: ACL\ACLBundle\Entity\User, property: username }
 
     encoders:
         Symfony\Component\Security\Core\User\User:
@@ -99,12 +100,12 @@ security:
             iterations: 1
             encode_as_base64: false
 
-        ACL\ACLBundle\Entity\User:
-            algorithm:        sha512
-            encode_as_base64: false
-            iterations:       3
+        # ACL\ACLBundle\Service\User:
+        #     algorithm:        sha512
+        #     encode_as_base64: false
+        #     iterations:       3
 
-        ACL\ACLBundle\Service\User:
+        ACL\ACLBundle\Entity\User:
             algorithm:        sha512
             encode_as_base64: false
             iterations:       3

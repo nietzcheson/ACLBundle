@@ -14,7 +14,7 @@ use ACL\ACLBundle;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UserRepository")
  */
-class User implements UserInterface, EquatableInterface, \Serializable
+class User implements UserInterface, EquatableInterface
 {
   /**
   * @ORM\Column(type="integer")
@@ -88,8 +88,8 @@ class User implements UserInterface, EquatableInterface, \Serializable
   */
   public function getRoles()
   {
-    $roles = new ACLBundle\UserRoles();
-    return $roles->roles();
+    //$roles = new ACLBundle\UserRoles();
+    return $this->roles;
   }
 
   /**

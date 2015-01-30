@@ -4,6 +4,7 @@ namespace ACL\ACLBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ACL\ACLBundle;
 
@@ -13,7 +14,7 @@ use ACL\ACLBundle;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface, EquatableInterface, \Serializable
 {
   /**
   * @ORM\Column(type="integer")
@@ -47,10 +48,15 @@ class User implements UserInterface, \Serializable
   */
   private $isActive;
 
-  public function __construct()
+  public function __construct($username, $password, $salt, array $roles)
   {
     $this->isActive = true;
-    $this->salt = md5(uniqid(null, true));
+    // $this->salt = md5(uniqid(null, true));
+
+    $this->username = $username;
+    $this->password = $password;
+    $this->salt = $salt;
+    $this->roles = $roles;
   }
 
   /**
@@ -215,5 +221,26 @@ class User implements UserInterface, \Serializable
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+      if (!$user instanceof WebserviceUser) {
+        return false;
+      }
+
+      if ($this->password !== $user->getPassword()) {
+        return false;
+      }
+
+      if ($this->salt !== $user->getSalt()) {
+        return false;
+      }
+
+      if ($this->username !== $user->getUsername()) {
+        return false;
+      }
+
+      return true;
     }
 }

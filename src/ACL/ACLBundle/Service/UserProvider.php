@@ -4,23 +4,25 @@ namespace ACL\ACLBundle\Service;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use ACL\ACLBundle\Entity;
 
-class UserProvider implements UserProviderInterface
+class UserProvider extends Controller implements UserProviderInterface
 {
   public function loadUserByUsername($username)
   {
-    // make a call to your webservice here
-    $userData = ...
-    // pretend it returns an array on success, false if there is no user
 
-    if ($userData) {
-      $password = '...';
+    $em = $this->getDoctrine()->getManager()->getRepository("ACLBundle:User");
+    $usuario = $em->findOneByUsername($username);
 
-      // ...
+    if ($usuario) {
+      $password = $usuario->getPassword();
+      $salt = $usuario->getSalt();
+      $roles = array("ROLE_ADMIN");
 
-      return new WebserviceUser($username, $password, $salt, $roles);
+      return new Entity\User($username, $password, $salt, $roles);
     }
 
     throw new UsernameNotFoundException(
@@ -30,7 +32,7 @@ class UserProvider implements UserProviderInterface
 
 public function refreshUser(UserInterface $user)
 {
-  if (!$user instanceof WebserviceUser) {
+  if (!$user instanceof Entity\User) {
     throw new UnsupportedUserException(
     sprintf('Instances of "%s" are not supported.', get_class($user))
   );
@@ -41,7 +43,7 @@ return $this->loadUserByUsername($user->getUsername());
 
 public function supportsClass($class)
 {
-  return $class === 'Acme\WebserviceUserBundle\Security\User\WebserviceUser';
+  return $class === 'ACL\ACLBundle\Entity\User';
 }
 }
 

@@ -77,7 +77,8 @@ security:
     providers:
       chain_provider:
         chain:
-          providers: ["in_memory", "user_db"]
+          providers: ["in_memory", "user_db", "user_provider"]
+          #providers: ["in_memory", "user_provider"]
 
       in_memory:
           memory:
@@ -89,6 +90,9 @@ security:
       user_db:
         entity: { class: ACL\ACLBundle\Entity\User, property: username }
 
+      user_provider:
+            id: user_provider
+
     encoders:
         Symfony\Component\Security\Core\User\User:
             algorithm:   sha512
@@ -96,6 +100,11 @@ security:
             encode_as_base64: false
 
         ACL\ACLBundle\Entity\User:
+            algorithm:        sha512
+            encode_as_base64: false
+            iterations:       3
+
+        ACL\ACLBundle\Service\User:
             algorithm:        sha512
             encode_as_base64: false
             iterations:       3

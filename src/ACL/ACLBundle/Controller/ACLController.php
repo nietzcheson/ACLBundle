@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
-use ACL\ACLBundle;
+use ACL\ACLBundle\Entity\User;
 
 class ACLController extends Controller
 {
@@ -26,7 +26,6 @@ class ACLController extends Controller
 
     $user->setPassword($encoder->encodePassword('foo', $user->getSalt()));
     $user->setEmail("cristianangulonova@gmail.com");
-    $user->setIsActive(1);
 
     $em = $this->getDoctrine()->getManager();
     $em->persist($user);

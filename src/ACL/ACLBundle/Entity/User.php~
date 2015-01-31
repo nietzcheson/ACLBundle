@@ -5,15 +5,15 @@ namespace ACL\ACLBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-
 /**
  * User
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UserRepository")
  */
-class User implements UserInterface, \Serializable
+class User
 {
+
   /**
   * @ORM\Column(type="integer")
   * @ORM\Id
@@ -27,12 +27,7 @@ class User implements UserInterface, \Serializable
   private $username;
 
   /**
-  * @ORM\Column(type="string", length=32)
-  */
-  private $salt;
-
-  /**
-  * @ORM\Column(type="string", length=255)
+  * @ORM\Column(type="string", length=64)
   */
   private $password;
 
@@ -49,7 +44,8 @@ class User implements UserInterface, \Serializable
   public function __construct()
   {
     $this->isActive = true;
-    $this->salt = md5(uniqid(null, true));
+    // may not be needed, see section on salt below
+    // $this->salt = md5(uniqid(null, true));
   }
 
   /**
@@ -65,7 +61,9 @@ class User implements UserInterface, \Serializable
   */
   public function getSalt()
   {
-    return $this->salt;
+    // you *may* need a real salt depending on your encoder
+    // see section on salt below
+    return null;
   }
 
   /**
@@ -82,41 +80,6 @@ class User implements UserInterface, \Serializable
   public function getRoles()
   {
     return array('ROLE_USER');
-  }
-
-  /**
-  * @inheritDoc
-  */
-  public function eraseCredentials()
-  {
-  }
-
-  /**
-  * @inheritDoc
-  */
-  public function equals(UserInterface $user)
-  {
-    return $this->id === $user->getId();
-  }
-
-  /**
-  * @see \Serializable::serialize()
-  */
-  public function serialize()
-  {
-    return serialize(array(
-    $this->id,
-    ));
-  }
-
-  /**
-  * @see \Serializable::unserialize()
-  */
-  public function unserialize($serialized)
-  {
-    list (
-    $this->id,
-    ) = unserialize($serialized);
   }
 
 }

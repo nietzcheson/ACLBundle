@@ -4,9 +4,6 @@ namespace ACL\ACLBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use ACL\ACLBundle;
 
 /**
  * User
@@ -14,8 +11,9 @@ use ACL\ACLBundle;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UserRepository")
  */
-class User implements UserInterface, EquatableInterface
+class User
 {
+
   /**
   * @ORM\Column(type="integer")
   * @ORM\Id
@@ -27,11 +25,6 @@ class User implements UserInterface, EquatableInterface
   * @ORM\Column(type="string", length=25, unique=true)
   */
   private $username;
-
-  /**
-  * @ORM\Column(type="string", length=32)
-  */
-  private $salt;
 
   /**
   * @ORM\Column(type="string", length=255)
@@ -48,15 +41,11 @@ class User implements UserInterface, EquatableInterface
   */
   private $isActive;
 
-  public function __construct($username, $password, $salt, array $roles)
+  public function __construct()
   {
     $this->isActive = true;
+    // may not be needed, see section on salt below
     // $this->salt = md5(uniqid(null, true));
-
-    $this->username = $username;
-    $this->password = $password;
-    $this->salt = $salt;
-    $this->roles = $roles;
   }
 
   /**
@@ -72,7 +61,9 @@ class User implements UserInterface, EquatableInterface
   */
   public function getSalt()
   {
-    return $this->salt;
+    // you *may* need a real salt depending on your encoder
+    // see section on salt below
+    return null;
   }
 
   /**
@@ -88,43 +79,7 @@ class User implements UserInterface, EquatableInterface
   */
   public function getRoles()
   {
-    //$roles = new ACLBundle\UserRoles();
-    return $this->roles;
-  }
-
-  /**
-  * @inheritDoc
-  */
-  public function eraseCredentials()
-  {
-  }
-
-  /**
-  * @inheritDoc
-  */
-  public function equals(UserInterface $user)
-  {
-    return $this->id === $user->getId();
-  }
-
-  /**
-  * @see \Serializable::serialize()
-  */
-  public function serialize()
-  {
-    return serialize(array(
-    $this->id,
-    ));
-  }
-
-  /**
-  * @see \Serializable::unserialize()
-  */
-  public function unserialize($serialized)
-  {
-    list (
-    $this->id,
-    ) = unserialize($serialized);
+    return array('ROLE_USER');
   }
 
 
@@ -147,19 +102,6 @@ class User implements UserInterface, EquatableInterface
     public function setUsername($username)
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
 
         return $this;
     }
@@ -221,26 +163,5 @@ class User implements UserInterface, EquatableInterface
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    public function isEqualTo(UserInterface $user)
-    {
-      if (!$user instanceof WebserviceUser) {
-        return false;
-      }
-
-      if ($this->password !== $user->getPassword()) {
-        return false;
-      }
-
-      if ($this->salt !== $user->getSalt()) {
-        return false;
-      }
-
-      if ($this->username !== $user->getUsername()) {
-        return false;
-      }
-
-      return true;
     }
 }

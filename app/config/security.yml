@@ -100,12 +100,12 @@ security:
             iterations: 1
             encode_as_base64: false
 
-        # ACL\ACLBundle\Service\User:
-        #     algorithm:        sha512
-        #     encode_as_base64: false
-        #     iterations:       3
-
         ACL\ACLBundle\Entity\User:
+            algorithm:        sha512
+            encode_as_base64: false
+            iterations:       3
+
+        ACL\ACLBundle\Service\UserEntityService:
             algorithm:        sha512
             encode_as_base64: false
             iterations:       3

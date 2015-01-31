@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use ACL\ACLBundle\Entity;
+use ACL\ACLBundle\Service;
 
 class UserProvider extends Controller implements UserProviderInterface
 {
@@ -22,7 +22,7 @@ class UserProvider extends Controller implements UserProviderInterface
       $salt = $usuario->getSalt();
       $roles = array("ROLE_ADMIN");
 
-      return new Entity\User($username, $password, $salt, $roles);
+      return new Service\UserEntityService($username, $password, $salt, $roles);
     }
 
     throw new UsernameNotFoundException(
@@ -35,7 +35,7 @@ public function refreshUser(UserInterface $user)
 
   // echo "<pre>";print_r($user);
   // exit();
-  if (!$user instanceof Entity\User) {
+  if (!$user instanceof Service\UserEntityService) {
     throw new UnsupportedUserException(
     sprintf('Instances of "%s" are not supported.', get_class($user))
     );
@@ -46,7 +46,7 @@ return $this->loadUserByUsername($user->getUsername());
 
 public function supportsClass($class)
 {
-  return $class === 'ACL\ACLBundle\Entity\User';
+  return $class === 'ACL\ACLBundle\Service\UserEntityService';
 }
 }
 

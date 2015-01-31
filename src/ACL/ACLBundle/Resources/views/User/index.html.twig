@@ -3,12 +3,12 @@
 {% block body -%}
     <h1>User list</h1>
 
-    <table class="records_list">
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Username</th>
-                <th>Password</th>
+                <!--<th>Password</th>-->
                 <th>Email</th>
                 <th>Isactive</th>
                 <th>Actions</th>
@@ -19,7 +19,7 @@
             <tr>
                 <td><a href="{{ path('user_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.username }}</td>
-                <td>{{ entity.password }}</td>
+                <!--<td>{{ entity.password }}</td>-->
                 <td>{{ entity.email }}</td>
                 <td>{{ entity.isActive }}</td>
                 <td>

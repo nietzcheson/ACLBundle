@@ -5,9 +5,41 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" media="screen" title="Bootstrap" charset="utf-8">
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" media="screen" title="Bootstrap" charset="utf-8">
+        <link rel="stylesheet" href="{{ asset('wtf-forms/wtf-forms.css') }}">
+        <link rel="stylesheet" href="{{ asset('wtf-forms/docs.css') }}">
     </head>
     <body>
-        {% block body %}{% endblock %}
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ACLBundle</a>
+          </div>
+
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <a type="button" class="btn btn-default navbar-btn" href="{{ path('user') }}">Usuarios</a>
+            <a type="button" class="btn btn-default navbar-btn" href="{{ path('roles') }}">Roles</a>
+            <a type="button" class="btn btn-default navbar-btn" href="{{ path('permisos') }}">Permisos</a>
+
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          {% block body %}{% endblock %}
+        </div>
+      </div>
+
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

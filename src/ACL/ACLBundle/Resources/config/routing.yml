@@ -1,3 +1,11 @@
+acl_permisos:
+    resource: "@ACLBundle/Resources/config/routing/permisos.yml"
+    prefix:   /permisos
+
+acl_roles:
+    resource: "@ACLBundle/Resources/config/routing/roles.yml"
+    prefix:   /roles
+
 acl_user:
     resource: "@ACLBundle/Resources/config/routing/user.yml"
     prefix:   /user

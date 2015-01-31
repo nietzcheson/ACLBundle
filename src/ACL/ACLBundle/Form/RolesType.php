@@ -16,9 +16,16 @@ class RolesType extends AbstractType
     {
         $builder
             ->add('role')
+            ->add('permisos','entity',array(
+              'class' => 'ACLBundle:Permisos',
+              'property' => 'permiso',
+              "empty_value" => "Seleccione",
+              'expanded' => true,
+              'multiple' => true
+            ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

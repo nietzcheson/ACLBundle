@@ -41,11 +41,6 @@ class UserController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $formData = $form->getData();
-
-            $factory = $this->get('security.encoder_factory');
-            $encoder = $factory->getEncoder($entity);
-            $entity->setPassword($encoder->encodePassword($formData->getPassword(), $entity->getSalt()));
             $em->persist($entity);
             $em->flush();
 

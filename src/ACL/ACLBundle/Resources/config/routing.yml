@@ -1,3 +1,7 @@
+acl_user:
+    resource: "@ACLBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
 acl_new_user:
     path:     /acl/new_user
     defaults: { _controller: ACLBundle:ACL:new }

@@ -3,6 +3,7 @@
 namespace ACL\ACLBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Roles
@@ -70,12 +71,16 @@ class Roles
     *      )
     **/
     private $permisos;
+
     /**
-    * Constructor
+    * @ORM\OneToMany(targetEntity="User", mappedBy="role")
     */
+    protected $users;
+
     public function __construct()
     {
       $this->permisos = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->users = new ArrayCollection();
     }
 
     /**
@@ -109,5 +114,38 @@ class Roles
     public function getPermisos()
     {
         return $this->permisos;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \ACL\ACLBundle\Entity\User $users
+     * @return Roles
+     */
+    public function addUser(\ACL\ACLBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \ACL\ACLBundle\Entity\User $users
+     */
+    public function removeUser(\ACL\ACLBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

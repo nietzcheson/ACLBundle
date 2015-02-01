@@ -164,4 +164,10 @@ class User
     {
         return $this->isActive;
     }
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Roles", inversedBy="users")
+    * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+    */
+    protected $role;
 }

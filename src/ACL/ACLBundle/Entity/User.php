@@ -164,4 +164,33 @@ class User
     {
         return $this->isActive;
     }
+
+    /**
+    * @ORM\ManyToOne(targetEntity="Roles", inversedBy="users")
+    * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+    */
+    protected $role;
+
+    /**
+     * Set role
+     *
+     * @param \ACL\ACLBundle\Entity\Roles $role
+     * @return User
+     */
+    public function setRole(\ACL\ACLBundle\Entity\Roles $role = null)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return \ACL\ACLBundle\Entity\Roles 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 }

@@ -19,9 +19,14 @@ class UserType extends AbstractType
             ->add('password')
             ->add('email')
             ->add('isActive')
+            ->add('role', 'entity', array(
+              'class' => 'ACLBundle:Roles',
+              'property' => 'role',
+              'empty_value' => 'Seleccione un role'
+            ))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */

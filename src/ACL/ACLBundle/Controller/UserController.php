@@ -39,6 +39,11 @@ class UserController extends Controller
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($entity);
+        $formData = $form->getData();
+        $entity->setPassword($encoder->encodePassword($formData->getPassword(), $entity->getSalt()));
+
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
@@ -168,6 +173,11 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($entity);
+        $formData = $editForm->getData();
+        $entity->setPassword($encoder->encodePassword($formData->getPassword(), $entity->getSalt()));
 
         if ($editForm->isValid()) {
             $em->flush();

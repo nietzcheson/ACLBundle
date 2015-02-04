@@ -4,16 +4,19 @@ namespace ACL\ACLBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
- * User
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UserRepository")
- */
-class User
+* ACL\ACLBundle\Entity\Usuarios
+*
+* @ORM\Table(name="Usuarios")
+* @ORM\Entity(repositoryClass="ACL\ACLBundle\Entity\UsuariosRepository")
+*/
+class Usuarios implements UserInterface
 {
-
   /**
   * @ORM\Column(type="integer")
   * @ORM\Id
@@ -27,7 +30,12 @@ class User
   private $username;
 
   /**
-  * @ORM\Column(type="string", length=255)
+  * @ORM\Column(type="string", length=32)
+  */
+  private $salt;
+
+  /**
+  * @ORM\Column(type="string", length=40)
   */
   private $password;
 
@@ -41,11 +49,17 @@ class User
   */
   private $isActive;
 
+  /**
+  * @ORM\ManyToMany(targetEntity="Roles", inversedBy="usuarios")
+  *
+  */
+  private $roles;
+
   public function __construct()
   {
     $this->isActive = true;
-    // may not be needed, see section on salt below
-    // $this->salt = md5(uniqid(null, true));
+    $this->salt = md5(uniqid(null, true));
+    $this->roles = new ArrayCollection();
   }
 
   /**
@@ -61,9 +75,7 @@ class User
   */
   public function getSalt()
   {
-    // you *may* need a real salt depending on your encoder
-    // see section on salt below
-    return null;
+    return $this->salt;
   }
 
   /**
@@ -79,9 +91,40 @@ class User
   */
   public function getRoles()
   {
-    return array('ROLE_USER');
+    return $this->roles->toArray();
   }
 
+  /**
+  * @inheritDoc
+  */
+  public function eraseCredentials()
+  {
+  }
+
+  public function isEqualTo(UserInterface $user)
+  {
+    return $this->username === $user->getUsername();
+  }
+
+  public function isAccountNonExpired()
+  {
+    return true;
+  }
+
+  public function isAccountNonLocked()
+  {
+    return true;
+  }
+
+  public function isCredentialsNonExpired()
+  {
+    return true;
+  }
+
+  public function isEnabled()
+  {
+    return $this->isActive;
+  }
 
     /**
      * Get id
@@ -97,7 +140,7 @@ class User
      * Set username
      *
      * @param string $username
-     * @return User
+     * @return Usuarios
      */
     public function setUsername($username)
     {
@@ -107,10 +150,23 @@ class User
     }
 
     /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return Usuarios
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
      * Set password
      *
      * @param string $password
-     * @return User
+     * @return Usuarios
      */
     public function setPassword($password)
     {
@@ -123,7 +179,7 @@ class User
      * Set email
      *
      * @param string $email
-     * @return User
+     * @return Usuarios
      */
     public function setEmail($email)
     {
@@ -146,7 +202,7 @@ class User
      * Set isActive
      *
      * @param boolean $isActive
-     * @return User
+     * @return Usuarios
      */
     public function setIsActive($isActive)
     {
@@ -166,31 +222,35 @@ class User
     }
 
     /**
-    * @ORM\ManyToOne(targetEntity="Roles", inversedBy="users")
-    * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
-    */
-    protected $role;
-
-    /**
-     * Set role
+     * Add grupos
      *
-     * @param \ACL\ACLBundle\Entity\Roles $role
-     * @return User
+     * @param \ACL\ACLBundle\Entity\Grupos $grupos
+     * @return Usuarios
      */
-    public function setRole(\ACL\ACLBundle\Entity\Roles $role = null)
+    public function addGrupo(\ACL\ACLBundle\Entity\Grupos $grupos)
     {
-        $this->role = $role;
+        $this->grupos[] = $grupos;
 
         return $this;
     }
 
     /**
-     * Get role
+     * Remove grupos
      *
-     * @return \ACL\ACLBundle\Entity\Roles 
+     * @param \ACL\ACLBundle\Entity\Grupos $grupos
      */
-    public function getRole()
+    public function removeGrupo(\ACL\ACLBundle\Entity\Grupos $grupos)
     {
-        return $this->role;
+        $this->grupos->removeElement($grupos);
+    }
+
+    /**
+     * Get grupos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGrupos()
+    {
+        return $this->grupos;
     }
 }

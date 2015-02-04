@@ -1,3 +1,10 @@
+acl_roles:
+    resource: "@ACLBundle/Resources/config/routing/roles.yml"
+    prefix:   /roles
+
+acl_usuarios:
+    resource: "@ACLBundle/Resources/config/routing/usuarios.yml"
+    prefix:   /usuarios
 
 acl_new_user:
     path:     /acl/new_user

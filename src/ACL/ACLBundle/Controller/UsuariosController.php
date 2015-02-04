@@ -41,6 +41,14 @@ class UsuariosController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $factory = $this->get('security.encoder_factory');
+            $encoder = $factory->getEncoder($entity);
+
+            $formData = $form->getData();
+
+            $entity->setPassword($encoder->encodePassword($formData->getPassword(), $entity->getSalt()));
+
             $em->persist($entity);
             $em->flush();
 
@@ -168,6 +176,13 @@ class UsuariosController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
+
+        $factory = $this->get('security.encoder_factory');
+        $encoder = $factory->getEncoder($entity);
+
+        $formData = $editForm->getData();
+
+        $entity->setPassword($encoder->encodePassword($formData->getPassword(), $entity->getSalt()));
 
         if ($editForm->isValid()) {
             $em->flush();

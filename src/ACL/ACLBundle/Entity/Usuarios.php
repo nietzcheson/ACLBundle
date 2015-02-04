@@ -35,7 +35,7 @@ class Usuarios implements UserInterface
   private $salt;
 
   /**
-  * @ORM\Column(type="string", length=40)
+  * @ORM\Column(type="string", length=128)
   */
   private $password;
 

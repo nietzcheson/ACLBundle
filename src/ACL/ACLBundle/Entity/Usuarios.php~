@@ -35,7 +35,7 @@ class Usuarios implements UserInterface
   private $salt;
 
   /**
-  * @ORM\Column(type="string", length=40)
+  * @ORM\Column(type="string", length=128)
   */
   private $password;
 
@@ -222,35 +222,25 @@ class Usuarios implements UserInterface
     }
 
     /**
-     * Add grupos
+     * Add roles
      *
-     * @param \ACL\ACLBundle\Entity\Grupos $grupos
+     * @param \ACL\ACLBundle\Entity\Roles $roles
      * @return Usuarios
      */
-    public function addGrupo(\ACL\ACLBundle\Entity\Grupos $grupos)
+    public function addRole(\ACL\ACLBundle\Entity\Roles $roles)
     {
-        $this->grupos[] = $grupos;
+        $this->roles[] = $roles;
 
         return $this;
     }
 
     /**
-     * Remove grupos
+     * Remove roles
      *
-     * @param \ACL\ACLBundle\Entity\Grupos $grupos
+     * @param \ACL\ACLBundle\Entity\Roles $roles
      */
-    public function removeGrupo(\ACL\ACLBundle\Entity\Grupos $grupos)
+    public function removeRole(\ACL\ACLBundle\Entity\Roles $roles)
     {
-        $this->grupos->removeElement($grupos);
-    }
-
-    /**
-     * Get grupos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGrupos()
-    {
-        return $this->grupos;
+        $this->roles->removeElement($roles);
     }
 }

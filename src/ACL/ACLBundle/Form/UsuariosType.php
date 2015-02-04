@@ -16,7 +16,7 @@ class UsuariosType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('salt')
+            ->add('salt','hidden')
             ->add('password','repeated', array(
               'type' => 'password',
               'invalid_message' => 'The password fields must match.',

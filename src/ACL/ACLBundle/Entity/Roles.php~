@@ -127,4 +127,27 @@ class Roles implements RoleInterface
     {
         return $this->usuarios;
     }
+
+    /**
+     * Set role_key
+     *
+     * @param string $roleKey
+     * @return Roles
+     */
+    public function setRoleKey($roleKey)
+    {
+        $this->role_key = $roleKey;
+
+        return $this;
+    }
+
+    /**
+     * Get role_key
+     *
+     * @return string
+     */
+    public function getRoleKey()
+    {
+        return $this->role_key;
+    }
 }
